@@ -239,6 +239,7 @@ const getUser = async (req, res) => {
 
     if (req.userId !== userId) return res.status(403).send({ status: false, message: "unauthorized access" })
 
+
     let data = await userModel.findById({ _id: userId })
     if (!data) {
       return res.status(404).send({ status: false, message: "User profile not found" })
