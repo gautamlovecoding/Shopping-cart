@@ -12,11 +12,7 @@ const createCart = async function (req, res) {
     const jwtUserId = req.userId
     let { productId, cartId } = requestBody
 
-    //  authroization
-
-    if (!(userId === jwtUserId)) {
-      return res.status(403).send({ status: false, msg: "unauthorized access" })
-    }
+   
 
     if (!isValidObjectId(userId)) {
       return res.status(400).send({
@@ -24,6 +20,14 @@ const createCart = async function (req, res) {
         message: "Invalid userId",
       })
     }
+
+     //  authroization
+
+    if (!(userId === jwtUserId)) {
+      return res.status(403).send({ status: false, msg: "unauthorized access" })
+    }
+
+    
     if (!isValidRequestBody(requestBody)) {
       return res.status(400).send({ status: false, message: "Please provide cart details" })
     }
@@ -90,6 +94,7 @@ const createCart = async function (req, res) {
       if (checkCartExist._id.toString() !== cartId)
         return res.status(404).send({ status: true, message: "Cart not found" })
     }
+
     let array = checkCartExist.items
     for (let i = 0; i < array.length; i++) {
       if (array[i].productId == productId) {
@@ -140,11 +145,11 @@ const updateCart = async (req, res) => {
     if (!isValidObjectId(userId)) return res.status(400).send({ status: false, message: "invalid User Id" })
 
     //Authorization of user
-    // if (req.userId !== userId)
-    //   return res.status(403).send({
-    //     status: false,
-    //     message: "You are not authorized to update your cart",
-    //   })
+    if (req.userId !== userId)
+      return res.status(403).send({
+        status: false,
+        message: "You are not authorized to update your cart",
+      })
 
     // if empty body
     if (!Object.keys(data).length) {
@@ -265,7 +270,7 @@ const getCart = async (req, res) => {
       return res.status(400).send({ status: false, message: "Please provide a valid userId" })
 
     // Authorization Field
-    if (req.userId !== jwtUserId) return res.status(403).send({ status: false, message: "Unauthorized access" })
+    if (req.userId !== userId) return res.status(403).send({ status: false, message: "Unauthorized access" })
 
     //Checking cart in DB
     const checkingCart = await cartModel.findOne({ userId: userId })

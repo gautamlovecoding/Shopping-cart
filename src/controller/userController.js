@@ -229,7 +229,7 @@ const userLogin = async (req, res) => {
 //to get user information
 const getUser = async (req, res) => {
   try {
-    userId = req.params.userId
+    let userId = req.params.userId
 
     if (!isValidObjectId(userId)) return res.status(400).send({ status: false, message: " Invalid userId" })
 

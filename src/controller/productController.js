@@ -2,7 +2,6 @@ const productModel = require("../model/productModel")
 const uploadFile = require("./awsController")
 const { isValid, isValidObjectId, isValidFiles } = require("../validation/validate")
 
-/***************************Global validation End**************************/
 
 /**************************Fifth Api****************************/
 
